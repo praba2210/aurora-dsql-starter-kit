@@ -97,6 +97,44 @@ plugins:
   - search
   - privacy
   - macros
+  - llmstxt:
+      files:
+        - inputs:
+            - "**/*.md"
+          output: "llms.txt"
+      markdown_description: "Documentation for Amazon Aurora DSQL, a serverless distributed SQL database"
+      sections:
+        "Overview":
+          - "index.md": "Welcome"
+          - "what-is-amazon-aurora-dsql.md": "What is Amazon Aurora DSQL?"
+        "Getting Started":
+          - "guides/getting-started/quickstart.md": "Getting Started"
+        "Managing Aurora DSQL Clusters":
+          - "managing-clusters.md": "Managing Clusters Overview"
+          - "single-region-clusters.md": "Single-Region Clusters"
+          - "multi-region-clusters.md": "Multi-Region Clusters"
+        "Programming with DSQL":
+          - "programming-with-dsql.md": "Programming with DSQL Overview"
+          - "connectors-overview.md": "Connectors Overview"
+        "Auth & Access":
+          - "authentication-and-authorization.md": "Auth & Access Overview"
+          - "generate-authentication-token.md": "Generate Authentication Token"
+          - "database-roles-iam-authentication.md": "Database Roles and IAM Authentication"
+        "Query Editors":
+          - "generative-ai/query-editor.md": "Aurora DSQL Query Editor"
+          - "generative-ai/jupyterlab.md": "Using JupyterLab with Aurora DSQL"
+        "Generative AI":
+          - "generative-ai/mcp-server.md": "AWS Labs Aurora DSQL MCP Server"
+        "Backup and Restore":
+          - "backup-and-restore.md": "Backup and Restore"
+        "Considerations":
+          - "considerations.md": "Considerations Overview"
+        "Quotas and Limits":
+          - "quotas-and-limits.md": "Quotas and Limits Overview"
+        "API Reference":
+          - "api-reference.md": "API Reference Overview"
+        "Troubleshooting":
+          - "troubleshooting.md": "Troubleshooting Overview"
 
 validation:
   nav:
