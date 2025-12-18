@@ -48,9 +48,16 @@ This repository also contains AI rules that can help create a more seamless agen
 
 ### Kiro Power
 
-To setup the Kiro power, simply launch the power installer from the [Powers Registry](https://kiro.dev/launch/powers/aurora-dsql/). You'll be redirected to the Power in your Kiro IDE where you can select the **`Try Power`** button 
-for an interactive onboarding experience complete with MCP setup or you can prompt Kiro from any project about 
-DSQL and the agent will automatically activate the power. 
+To setup the Kiro power:
+1. Install directly from the [Kiro Powers Registry](https://kiro.dev/launch/powers/aurora-dsql/)
+2. Once redirected to the Power in the IDE either:
+   1. Select the **`Try Power`** button. Suggested for people who want:
+      - The AI to guide MCP server setup
+      - An interactive onboarding experience with DSQL to create a new cluster
+   2. Open a new Kiro chat and ask anything related to DSQL 
+      - **Optionally update the MCP Config:** Add your existing cluster details and test the MCP server connection
+        so the MCP server can be used out of the box with the power. 
+      - The Kiro agent automatically activates the power when prompted
 
 ### Claude Skill
 
