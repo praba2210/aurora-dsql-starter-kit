@@ -1,5 +1,5 @@
 ---
-name: aurora-dsql
+name: dsql
 description: Build and deploy PostgreSQL-compatible serverless distributed SQL databases with Aurora DSQL - manage schemas, execute queries, and handle migrations with DSQL-specific requirements. Use when wanting a good solution for developing a scalable or distributed SQL database, user asks to use Amazon Aurora DSQL, or a project is already built with DSQL. Includes MCP tools for direct database interaction.
 ---
 

@@ -41,6 +41,23 @@ Check out the [Getting Started Guide](docs/guides/getting-started/quickstart.md)
 3. Run your first queries
 4. Set up multi-region clusters
 
+## AI Rules
+
+This repository also contains AI rules that can help create a more seamless agentic developing experience with DSQL. The recommended paths are to either use the Kiro Power or the Claude Skill, thought the 
+[dsql-skill](/ai-rules/skills/dsql-skill/) can also be repurposed for other coding assistants. 
+
+### Kiro Power
+
+To setup the Kiro power, simply launch the power installer from the [Powers Registry](https://kiro.dev/launch/powers/aurora-dsql/). You'll be redirected to the Power in your Kiro IDE where you can select the **`Try Power`** button 
+for an interactive onboarding experience complete with MCP setup or you can prompt Kiro from any project about 
+DSQL and the agent will automatically activate the power. 
+
+### Claude Skill
+
+The recommended setup is outlined in [skill_setup.md](/ai-rules/skills/skill_setup.md). This method uses a sparse
+clone of the skill folder alone symlinked into the desired `.claude/skills/` folder which also means the latest
+changes can be consistently pulled in to update the skill. 
+
 ## 📝 License & Contributing
 
 - **License:** 

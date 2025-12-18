@@ -77,60 +77,67 @@ psql --version
 ```
 
 **If missing OR version <=14:**
+DSQL requires SNI support from psql >=14.
 - macOS: `brew install postgresql@17`
-- Linux: `sudo apt-get install postgresql-client`
+- Linux (Debian/Ubuntu): `sudo apt-get install postgresql-client`
+- Linux (RHEL/CentOS/Amazon Linux):
+  ```bash
+  sudo yum install -y https://download.postgresql.org/pub/repos/yum/reporpms/EL-9-x86_64/pgdg-redhat-repo-latest.noarch.rpm
+  sudo yum install -y postgresql17
+  ```
 
 ### Step 2: Check for Existing Clusters
 
-**List clusters in their preferred region (default: us-east-1):**
-
+**Set region (uses AWS_REGION or REGION if set, defaults to us-east-1):**
 ```bash
-aws dsql list-clusters --region us-east-1
+REGION=${AWS_REGION:-${REGION:-us-east-1}}
+```
+
+**List clusters in the region:**
+```bash
+aws dsql list-clusters --region $REGION
 ```
 
 **If they have NO clusters:**
-- Ask: "Would you like to create a new DSQL cluster in us-east-1?"
-- If yes, proceed to create single-region cluster
-- If they want different region, ask which one
+- Ask: "Would you like to create a new DSQL cluster in $REGION or a different region?"
+  - If yes, proceed to create single-region cluster
+  - If they want different region, ask which one and update REGION variable
 
-**If they have 1 cluster:**
-- Show cluster identifier and status
-- Ask: "Would you like to use this cluster or create a new one?"
-- If using existing, proceed to Step 3
-- If creating new, guide them through creation
-
-**If they have multiple clusters:**
-- List cluster identifiers with creation dates
-- Ask which one they want to use OR offer to create new
-- Confirm selection before proceeding
+**If they have ANY clusters:**
+- List ALL cluster identifiers with creation dates and status
+- Ask: "Would you like to use one of these clusters or create a new one?"
+  - If using existing, proceed to Step 3. 
+  - If creating new: 
+    - "Which region would you like to create a enw cluster in?"
+    - Immediately update REGION variable
+- Confirm all selections before proceeding. 
 
 **Create cluster command (if needed):**
 
 ```bash
-aws dsql create-cluster --region us-east-1 --tags Key=Name,Value=my-dsql-cluster
+aws dsql create-cluster --region $REGION --tags Key=Name,Value=my-dsql-cluster
 ```
 
 **Wait for ACTIVE status** (takes ~60 seconds):
 
 ```bash
-aws dsql get-cluster --identifier CLUSTER_ID --region us-east-1
+aws dsql get-cluster --identifier CLUSTER_ID --region $REGION
 ```
 
 ### Step 3: Get Cluster Connection Details
 
-**Extract cluster endpoint:**
+**Construct cluster endpoint:**
 
 ```bash
-CLUSTER_ID="your-cluster-id"
-REGION="us-east-1"
-CLUSTER_ENDPOINT=$(aws dsql get-cluster --identifier $CLUSTER_ID --region $REGION --query 'endpoint' --output text)
+CLUSTER_ID="<selected-cluster-id>"
+CLUSTER_ENDPOINT="${CLUSTER_ID}.dsql.${REGION}.on.aws"
 echo $CLUSTER_ENDPOINT
 ```
 
 **Store endpoint for their environment:**
 - Check for `.env` file or environment config
 - Add or update: `DSQL_ENDPOINT=<endpoint>`
-- Add region: `AWS_REGION=us-east-1`
+- Add region: `AWS_REGION=$REGION`
 - ALWAYS try reading `.env` first before modifying
 - If file is unreadable, use: `echo "DSQL_ENDPOINT=$CLUSTER_ENDPOINT" >> .env`
 
