@@ -19,9 +19,9 @@ jobs:
         run: |
           git clone --depth 1 https://github.com/awslabs/mcp.git /tmp/mcp
 
-      - name: Sync kiro_power to ai-rules/power
+      - name: Sync kiro_power to ai-rules/kiro-power
         run: |
-          rsync -av --delete /tmp/mcp/src/aurora-dsql-mcp-server/kiro_power/ ai-rules/power/
+          rsync -av --delete /tmp/mcp/src/aurora-dsql-mcp-server/kiro_power/ ai-rules/kiro-power/
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v7

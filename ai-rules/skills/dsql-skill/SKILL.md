@@ -24,7 +24,13 @@ Load these files as needed for detailed guidance:
 **When:** ALWAYS load before implementing schema changes or database operations
 **Contains:** DDL rules, connection patterns, transaction limits, security best practices
 
-### [mcp-tools.md](references/mcp-tools.md)
+### MCP:
+#### [mcp-setup.md](mcp/mcp-setup.md)
+**When:** Load for guidance adding to the DSQL MCP server
+**Requires:** An existing cluster endpoint
+**Contains:** Instructions for setting up the DSQL MCP server 
+
+#### [mcp-tools.md](mcp/mcp-tools.md)
 **When:** Load when you need detailed MCP tool syntax and examples
 **Contains:** Tool parameters, detailed examples, usage patterns
 

@@ -15,17 +15,18 @@ These guidelines apply when users say "Get started with DSQL" or similar phrases
 ## Agent Communication Style
 
 **Keep all responses succinct:**
-- ALWAYS tell the user what you did. 
-  - Responses MUST be concise and concrete. 
-  - ALWAYS contain descriptions to necessary steps. 
-  - ALWAYS remove unnecessary verbiage. 
+- ALWAYS tell the user what you did.
+  - Responses MUST be concise and concrete.
+  - ALWAYS contain descriptions to necessary steps.
+  - ALWAYS remove unnecessary verbiage.
   - Example:
     - "Created an inventory table with 4 columns"
     - "Updated the product column to be NOT NULL"
 - Ask direct questions when needed:
-  - User ambiguity SHOULD result in questions. 
+  - ALWAYS ask clarifying questions to avoid inaccurate assumptions
+  - User ambiguity SHOULD result in questions.
   - MUST clarify incompatible user decisions
-  - Example: 
+  - Example:
     - "What column names would you like in this table?"
     - "What is the column name of the primary key?"
     - "JSON must be serialized. Would you like to stringify the JSON to serialize it as TEXT?"
@@ -58,18 +59,6 @@ aws sts get-caller-identity
 - MUST verify IAM permissions include `dsql:CreateCluster`, `dsql:GetCluster`, `dsql:DbConnectAdmin`
 - Recommend [`AmazonAuroraDSQLConsoleFullAccess`](https://docs.aws.amazon.com/aws-managed-policy/latest/reference/AmazonAuroraDSQLConsoleFullAccess.html) managed policy
 
-**If configured:**
-- Proceed to Step 2
-
-**IF USING MCP (Stop to Ask) - Check uv (for MCP server):**
-
-```bash
-uv --version
-```
-
-**If missing:**
-- Install from: [Astral](https://docs.astral.sh/uv/getting-started/installation/)
-
 **Check PostgreSQL client:**
 
 ```bash
@@ -91,6 +80,7 @@ DSQL requires SNI support from psql >=14.
 **Set region (uses AWS_REGION or REGION if set, defaults to us-east-1):**
 ```bash
 REGION=${AWS_REGION:-${REGION:-us-east-1}}
+echo $REGION
 ```
 
 **List clusters in the region:**
@@ -106,11 +96,11 @@ aws dsql list-clusters --region $REGION
 **If they have ANY clusters:**
 - List ALL cluster identifiers with creation dates and status
 - Ask: "Would you like to use one of these clusters or create a new one?"
-  - If using existing, proceed to Step 3. 
-  - If creating new: 
+  - If using existing, proceed to Step 3.
+  - If creating new:
     - "Which region would you like to create a enw cluster in?"
     - Immediately update REGION variable
-- Confirm all selections before proceeding. 
+- Confirm all selections before proceeding.
 
 **Create cluster command (if needed):**
 
@@ -134,7 +124,7 @@ CLUSTER_ENDPOINT="${CLUSTER_ID}.dsql.${REGION}.on.aws"
 echo $CLUSTER_ENDPOINT
 ```
 
-**Store endpoint for their environment:**
+**Store endpoint for their project environment:**
 - Check for `.env` file or environment config
 - Add or update: `DSQL_ENDPOINT=<endpoint>`
 - Add region: `AWS_REGION=$REGION`
@@ -143,54 +133,14 @@ echo $CLUSTER_ENDPOINT
 
 ### Step 4: Set Up MCP Server (Optional)
 
-**Check if MCP server is configured:**
-- Look for `aurora-dsql-mcp-server` in MCP settings
+Would the user like to be guided through setting up the MCP server?
 
-**If not configured, offer to set up:**
-
-Edit the appropriate MCP settings file:
-- For Amazon Q: Edit `~/.aws/amazonq/mcp.json`
-- For Claude Code: Edit `.mcp.json` in project or `~/.claude.json` for user-scope
-- For Roo: Edit `mcp_settings.json`
-- For Cline: Edit `cline_mcp_settings.json`
-
-Add the following configuration:
-
-```json
-{
-  "mcpServers": {
-    "awslabs.aurora-dsql-mcp-server": {
-      "command": "uvx",
-      "args": [
-        "awslabs.aurora-dsql-mcp-server@latest",
-        "--cluster_endpoint",
-        "[your dsql cluster endpoint, e.g. abcdefghijklmnopqrst234567.dsql.us-east-1.on.aws]",
-        "--region",
-        "[your dsql cluster region, e.g. us-east-1]",
-        "--database_user",
-        "[your dsql username, e.g. admin]",
-        "--profile",
-        "default",
-        "--allow-writes"
-      ],
-      "env": {
-        "FASTMCP_LOG_LEVEL": "ERROR"
-      },
-      "disabled": false,
-      "autoApprove": []
-    }
-  }
-}
-```
+If so, follow the steps detailed in [mcp-setup.md](../mcp/mcp-setup.md)
 
 **MCP server provides:**
 - Direct query execution from agent
 - Schema exploration tools
 - Simplified database operations
-
-**Documentation:**
-- [MCP Server Setup Guide](https://awslabs.github.io/mcp/servers/aurora-dsql-mcp-server)
-- [AWS User Guide](https://docs.aws.amazon.com/aurora-dsql/latest/userguide/SECTION_aurora-dsql-mcp-server.html)
 
 ### Step 5: Test Connection
 
@@ -248,8 +198,8 @@ npm install @aws/aurora-dsql-node-postgres-connector
 
 **Python:**
 ```bash
-pip install psycopg2-binary  
-pip install aurora-dsql-python-connector 
+pip install psycopg2-binary
+pip install aurora-dsql-python-connector
 ```
 
 **Go:**
